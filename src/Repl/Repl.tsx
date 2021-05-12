@@ -1,18 +1,10 @@
 import * as React from "react";
 
 import { transform } from "../swc";
-import {
-  compileRun,
-  input,
-  inputCode,
-  inputCompilation,
-  label,
-  repl,
-  replHeading1,
-  select,
-  textarea,
-} from "./Repl.css";
+import { repl } from "./Repl.css";
+
 import { Result } from "./Result";
+import { Input } from "./Input";
 
 export function Repl() {
   const [code, setCode] = React.useState(`var test: string = "cat";`);
@@ -25,10 +17,9 @@ export function Repl() {
       error?: any;
       result?: any;
     }>();
+  const [lastOptions, setLastOptions] = React.useState<string>();
 
-  async function runTransform(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
+  async function runTransform() {
     setTransformationCode(code);
   }
 
@@ -54,6 +45,7 @@ export function Repl() {
         .then((transformation) => {
           if (!controller.signal.aborted) {
             setTransformation(transformation);
+            setLastOptions(JSON.stringify(defaultSwcOptions, null, 4));
           }
         });
 
@@ -65,68 +57,22 @@ export function Repl() {
 
   return (
     <div className={repl}>
-      <form onSubmit={runTransform} className={input}>
-        <h2 className={replHeading1}>Input</h2>
+      <Input
+        runTransform={runTransform}
+        setTransformationCode={setTransformationCode}
+        watchModeEnabled={watchModeEnabled}
+        setWatchModeEnabled={setWatchModeEnabled}
+        code={code}
+        setCode={setCode}
+        jscParserSyntax={jscParserSyntax}
+        setJscParserSyntax={setJscParserSyntax}
+      />
 
-        <div className={inputCode}>
-          <label htmlFor="repl-input" className={label}>
-            Code
-          </label>
-
-          <textarea
-            id="repl-code"
-            className={textarea}
-            value={code}
-            rows={8}
-            onChange={(e) => {
-              setCode(e.currentTarget.value);
-
-              if (watchModeEnabled) {
-                setTransformationCode(e.currentTarget.value);
-              }
-            }}
-          ></textarea>
-        </div>
-
-        <fieldset>
-          <legend className={label}>Options</legend>
-          <label htmlFor="jsx-parser-syntax" className={label}>
-            Choose a syntax:{" "}
-          </label>
-
-          <select
-            id="jsx-parser-syntax"
-            className={select}
-            value={jscParserSyntax}
-            onChange={(e) => {
-              setJscParserSyntax(e.currentTarget.value);
-            }}
-          >
-            <option value="ecmascript">ecmascript</option>
-            <option value="typescript">typescript</option>
-          </select>
-        </fieldset>
-
-        <div className={inputCompilation}>
-          <label className={label}>
-            <input
-              type="checkbox"
-              checked={watchModeEnabled}
-              onChange={(e) => {
-                if (e.currentTarget.checked) {
-                  setTransformationCode(e.currentTarget.value);
-                }
-                setWatchModeEnabled(e.currentTarget.checked);
-              }}
-            />
-            Run in watch mode
-          </label>
-
-          <button className={compileRun}>Compile</button>
-        </div>
-      </form>
-
-      <Result error={transformation?.error} result={transformation?.result} />
+      <Result
+        error={transformation?.error}
+        result={transformation?.result}
+        lastOptions={lastOptions}
+      />
     </div>
   );
 }

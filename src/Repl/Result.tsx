@@ -6,11 +6,12 @@ import { PrismAsyncLight as SyntaxHighlighter } from "react-syntax-highlighter";
 import docco from "react-syntax-highlighter/dist/esm/styles/hljs/docco";
 
 import { replHeading1 } from "./Repl.css";
-import { output } from "./Result.css";
+import { label, output } from "./Result.css";
 
 type Props = {
   error?: any;
   result?: { code: string };
+  lastOptions?: string;
 };
 
 export function Result(props: Props) {
@@ -20,15 +21,22 @@ export function Result(props: Props) {
         Result
       </h2>
 
-      {props?.error && (
+      {props.error && (
         <>
           <p>{props.error}</p>
         </>
       )}
-      {props.result && (
-        <SyntaxHighlighter language="javascript" style={docco}>
-          {props?.result.code}
-        </SyntaxHighlighter>
+      {props.result !== undefined && (
+        <>
+          <h3 className={label}>Code</h3>
+          <SyntaxHighlighter language="javascript" style={docco}>
+            {props.result?.code}
+          </SyntaxHighlighter>
+          <h3 className={label}>Transformation settings</h3>
+          <SyntaxHighlighter language="json" style={docco}>
+            {props.lastOptions}
+          </SyntaxHighlighter>
+        </>
       )}
     </div>
   );
