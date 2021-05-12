@@ -4,7 +4,7 @@ type Await<T> = T extends {
   ? U
   : T;
 
-type SwcModule = Await<typeof import("./vendor/swc-wasm-web")>;
+type SwcModule = Await<typeof import("./vendor/swc-wasm-web/wasm")>;
 
 const _swc: {
   loaded: Promise<boolean> | boolean;
@@ -12,7 +12,7 @@ const _swc: {
 } = {
   loaded: new Promise<boolean>(async (res) => {
     // TODO handle failed loads
-    const swcWasmWeb = await import("./vendor/swc-wasm-web");
+    const swcWasmWeb = await import("./vendor/swc-wasm-web/wasm");
 
     _swc.swc = swcWasmWeb;
 

@@ -4,7 +4,9 @@
   "scripts": {
     "copy-swc": "cp -r ../swc/wasm/pkg/ src/vendor/swc-wasm-web",
     "dev": "vite",
-    "build": "tsc && vite build",
+    "rewrite-import": "sed -i '' 's/const n={};let e/const n=import.meta;let e/' dist/assets/wasm.*.js",
+    "copy-wasm-to-build": "cp src/vendor/swc-wasm-web/wasm_bg.wasm dist/assets",
+    "build": "tsc && vite build && npm run copy-wasm-to-build && npm run rewrite-import",
     "serve": "vite preview"
   },
   "dependencies": {

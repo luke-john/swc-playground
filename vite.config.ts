@@ -4,5 +4,8 @@ import { vanillaExtractPlugin } from "@vanilla-extract/vite-plugin";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  optimizeDeps: {
+    exclude: ["./vendor/swc-wasm-web/*"],
+  },
   plugins: [reactRefresh(), vanillaExtractPlugin()],
 });
