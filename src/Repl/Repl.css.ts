@@ -69,9 +69,3 @@ export const compileRun = style({
   padding: `${globalThemeVars.space.small} ${globalThemeVars.space.medium}`,
   marginRight: globalThemeVars.space.medium,
 });
-
-export const output = style({
-  flex: 1,
-  display: "flex",
-  flexDirection: "column",
-});

@@ -7,12 +7,12 @@ import {
   inputCode,
   inputCompilation,
   label,
-  output,
   repl,
   replHeading1,
   select,
   textarea,
 } from "./Repl.css";
+import { Result } from "./Result";
 
 export function Repl() {
   const [code, setCode] = React.useState(`var test: string = "cat";`);
@@ -68,25 +68,6 @@ export function Repl() {
       <form onSubmit={runTransform} className={input}>
         <h2 className={replHeading1}>Input</h2>
 
-        <fieldset>
-          <legend className={label}>Options</legend>
-          <label htmlFor="jsx-parser-syntax" className={label}>
-            Choose a syntax:{" "}
-          </label>
-
-          <select
-            id="jsx-parser-syntax"
-            className={select}
-            value={jscParserSyntax}
-            onChange={(e) => {
-              setJscParserSyntax(e.currentTarget.value);
-            }}
-          >
-            <option value="ecmascript">ecmascript</option>
-            <option value="typescript">typescript</option>
-          </select>
-        </fieldset>
-
         <div className={inputCode}>
           <label htmlFor="repl-input" className={label}>
             Code
@@ -107,6 +88,25 @@ export function Repl() {
           ></textarea>
         </div>
 
+        <fieldset>
+          <legend className={label}>Options</legend>
+          <label htmlFor="jsx-parser-syntax" className={label}>
+            Choose a syntax:{" "}
+          </label>
+
+          <select
+            id="jsx-parser-syntax"
+            className={select}
+            value={jscParserSyntax}
+            onChange={(e) => {
+              setJscParserSyntax(e.currentTarget.value);
+            }}
+          >
+            <option value="ecmascript">ecmascript</option>
+            <option value="typescript">typescript</option>
+          </select>
+        </fieldset>
+
         <div className={inputCompilation}>
           <label className={label}>
             <input
@@ -126,21 +126,7 @@ export function Repl() {
         </div>
       </form>
 
-      <div role="region" aria-live="polite" className={output}>
-        <h2 className={replHeading1} tabIndex={-1}>
-          Result
-        </h2>
-
-        {transformation && transformation?.error ? (
-          <>
-            <p>{transformation.error}</p>
-          </>
-        ) : (
-          <pre>
-            <code>{transformation?.result.code}</code>
-          </pre>
-        )}
-      </div>
+      <Result error={transformation?.error} result={transformation?.result} />
     </div>
   );
 }
