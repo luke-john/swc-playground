@@ -2,14 +2,19 @@ import React from "react";
 
 import "./swc";
 import { Repl } from "./Repl/Repl";
-import { app, title } from "./App.css";
+import { app, header, title } from "./App.css";
+import { Footer } from "./Footer";
 
 function App() {
   return (
     <div className={app}>
-      <h1 className={title}>SWC playground</h1>
+      <header className={header}>
+        <h1 className={title}>SWC playground</h1>
+      </header>
 
       <Repl />
+
+      <Footer />
     </div>
   );
 }

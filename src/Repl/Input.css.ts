@@ -3,9 +3,10 @@ import { style, globalStyle } from "@vanilla-extract/css";
 import { globalThemeVars, mediaQuery } from "../global.css";
 
 export const input = style({
-  flex: 1,
+  // flex: 1,
   display: "flex",
   flexDirection: "column",
+  justifyContent: "flex-start",
 });
 
 globalStyle(`${input} > :not(:first-child)`, {
@@ -30,7 +31,7 @@ export const textarea = style({
 });
 
 export const inputCode = style({
-  flex: 1,
+  // flex: 1,
   display: "flex",
   flexDirection: "column",
 });

@@ -9,6 +9,8 @@ import {
   select,
   textarea,
 } from "./Input.css";
+
+import type { SwcOptions, SwcOptionsDispatch } from "./Repl";
 import { replHeading1 } from "./Repl.css";
 
 export function Input({
@@ -16,8 +18,8 @@ export function Input({
   setTransformationCode,
   watchModeEnabled,
   setWatchModeEnabled,
-  jscParserSyntax,
-  setJscParserSyntax,
+  optionsState,
+  optionsDispatch,
   code,
   setCode,
 }: {
@@ -25,8 +27,8 @@ export function Input({
   setTransformationCode: (transformationCode: string) => void;
   watchModeEnabled: boolean;
   setWatchModeEnabled: (enabled: boolean) => void;
-  jscParserSyntax: string;
-  setJscParserSyntax: (syntax: string) => void;
+  optionsState: SwcOptions;
+  optionsDispatch: SwcOptionsDispatch;
   code: string;
   setCode: (code: string) => void;
 }) {
@@ -62,21 +64,24 @@ export function Input({
 
       <fieldset>
         <legend className={label}>Options</legend>
+
         <label htmlFor="jsx-parser-syntax" className={label}>
           Choose a syntax:{" "}
+          <select
+            id="jsx-parser-syntax"
+            className={select}
+            value={optionsState.jscParserSyntax}
+            onChange={(e) => {
+              optionsDispatch({
+                option: "jscParserSyntax",
+                value: e.currentTarget.value,
+              });
+            }}
+          >
+            <option value="ecmascript">ecmascript</option>
+            <option value="typescript">typescript</option>
+          </select>
         </label>
-
-        <select
-          id="jsx-parser-syntax"
-          className={select}
-          value={jscParserSyntax}
-          onChange={(e) => {
-            setJscParserSyntax(e.currentTarget.value);
-          }}
-        >
-          <option value="ecmascript">ecmascript</option>
-          <option value="typescript">typescript</option>
-        </select>
       </fieldset>
 
       <div className={inputCompilation}>

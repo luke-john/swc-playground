@@ -32,6 +32,11 @@ export function Result(props: Props) {
           <SyntaxHighlighter language="javascript" style={docco}>
             {props.result?.code}
           </SyntaxHighlighter>
+        </>
+      )}
+
+      {props.lastOptions && (
+        <>
           <h3 className={label}>Transformation settings</h3>
           <SyntaxHighlighter language="json" style={docco}>
             {props.lastOptions}

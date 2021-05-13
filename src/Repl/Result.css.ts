@@ -6,6 +6,7 @@ export const output = style({
   flex: 1,
   display: "flex",
   flexDirection: "column",
+  justifyContent: "flex-start",
 });
 
 export const label = style({

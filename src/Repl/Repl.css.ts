@@ -9,9 +9,9 @@ export const repl = style({
   columnGap: globalThemeVars.space.large,
   "@media": {
     [mediaQuery.desktop]: {
-      display: "grid",
       gridTemplateColumns: "50% 50%",
       gridAutoFlow: "column",
+      overflow: "scroll",
     },
   },
 });

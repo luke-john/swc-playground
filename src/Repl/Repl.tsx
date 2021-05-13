@@ -6,9 +6,31 @@ import { repl } from "./Repl.css";
 import { Result } from "./Result";
 import { Input } from "./Input";
 
+export type SwcOptions = {
+  jscParserSyntax: "typescript" | "ecmascript";
+};
+
+export type SwcOptionsDispatch = (update: {
+  option: keyof SwcOptions;
+  value: any;
+}) => void;
+
 export function Repl() {
   const [code, setCode] = React.useState(`var test: string = "cat";`);
-  const [jscParserSyntax, setJscParserSyntax] = React.useState("typescript");
+  const [optionsState, optionsDispatch] = React.useReducer(
+    (
+      prevState: SwcOptions,
+      action: { option: keyof SwcOptions; value: any }
+    ) => {
+      prevState[action.option] = action.value;
+
+      return { ...prevState };
+    },
+    {
+      jscParserSyntax: "typescript",
+    }
+  );
+
   const [watchModeEnabled, setWatchModeEnabled] =
     React.useState<boolean>(false);
   const [transformationCode, setTransformationCode] = React.useState<string>();
@@ -28,7 +50,7 @@ export function Repl() {
       const controller = new AbortController();
 
       // Note: mutation is okay for now, as this is the only consumer
-      defaultSwcOptions.jsc.parser.syntax = jscParserSyntax;
+      defaultSwcOptions.jsc.parser.syntax = optionsState.jscParserSyntax;
 
       // TODO provide way to modify more swc options
       transform(code, defaultSwcOptions)
@@ -53,7 +75,7 @@ export function Repl() {
         controller.abort();
       };
     }
-  }, [transformationCode, jscParserSyntax]);
+  }, [transformationCode, optionsState.jscParserSyntax]);
 
   return (
     <div className={repl}>
@@ -64,8 +86,8 @@ export function Repl() {
         setWatchModeEnabled={setWatchModeEnabled}
         code={code}
         setCode={setCode}
-        jscParserSyntax={jscParserSyntax}
-        setJscParserSyntax={setJscParserSyntax}
+        optionsState={optionsState}
+        optionsDispatch={optionsDispatch}
       />
 
       <Result
@@ -89,6 +111,15 @@ const defaultSwcOptions = {
     parser: {
       syntax: "typescript",
     },
-    transform: {},
+    transform: {
+      react: {
+        runtime: "classic",
+        // importSource: "react",
+      },
+    },
   },
 };
+
+function test(props: {}) {
+  return <div />;
+}

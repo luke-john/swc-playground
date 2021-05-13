@@ -15,6 +15,7 @@ export const globalThemeVars = createGlobalTheme(":root", {
   color: {
     yellow: "#f2e326",
     coral: "#ffa587",
+    sectionBorder: "#ccc",
   },
   space: {
     small: "0.25rem",
@@ -25,7 +26,9 @@ export const globalThemeVars = createGlobalTheme(":root", {
   fontSizes: {
     heading1: "24px",
     heading2: "20px",
+    heading3: "18px",
     copy: "16px",
+    lowPriorityCopy: "14px",
   },
   fonts: {
     heading:
@@ -35,7 +38,8 @@ export const globalThemeVars = createGlobalTheme(":root", {
   },
 });
 
-globalStyle("html, body", {
+globalStyle("html, body, #root", {
   margin: 0,
   padding: 0,
+  height: "100%",
 });
